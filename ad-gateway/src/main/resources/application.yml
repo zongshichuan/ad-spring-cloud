@@ -1,0 +1,39 @@
+server:
+  port: 7010
+
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+        service: ad-gateway
+        #指定namespace和cluster
+        namespace: 0f1188c0-c978-4c16-afc9-5d92c085b4bd
+        #        cluster-name: SHANGHAI
+        cluster-name: NJ
+    gateway:
+      discovery:
+        locator:
+          #gateway自动去nacos读取微服务配置
+          enabled: true
+      routes:
+        - id: sponsor_route
+          uri: lb://ad-sponsor
+          predicates:
+            - Path=/ad-sponsor/**
+          filters:
+            #自定义过滤器工厂
+            - PreLog=a,b
+            - AccessLog=c,d
+
+        - id: search_route
+            uri: lb://ad-search
+            predicates:
+              - Path=/ad-search/**
+            filters:
+              #自定义过滤器工厂
+              - PreLog=a,b
+              - AccessLog=c,d
+
+  application:
+    name: ad-gateway

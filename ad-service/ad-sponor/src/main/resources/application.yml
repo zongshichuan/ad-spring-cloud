@@ -1,0 +1,44 @@
+server:
+  port: 7011
+  servlet:
+    context-path: /ad-sponsor
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+        service: ad-sponsor
+        #指定namespace和cluster
+        namespace: 0f1188c0-c978-4c16-afc9-5d92c085b4bd
+        #        cluster-name: SHANGHAI
+        cluster-name: NJ
+    sentinel:
+      transport:
+        #指定sentinel控制台地址
+        dashboard: localhost:8080
+      filter:
+        #打开/关闭掉对SpringMVC端点的保护
+        enabled: true
+  application:
+    name: ad-sponsor
+  main:
+    #因为，feignclient中有两个接口类中指定了同一个服务user-center,所以需要加上这个配置
+    allow-bean-definition-overriding: true
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate.format_sql: true
+    open-in-view: false
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/ad_data?autoReconnect=true&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+    tomcat:
+      max-active: 4
+      min-idle: 2
+      initial-size: 2
+
+
+
